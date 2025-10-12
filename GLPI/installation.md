@@ -12,7 +12,7 @@ Documentation officielle : 
 **GLPI nécessite 3 composants pour fonctionner** :  
 * Un serveur web comme NGINX ou Apache2 pour l'interface utilisateur 
 * Un compilateur PHP pour le code qui va gérer les interactions entre GLPI et l'utilisateur 
-* Un Système de Gestion de Bases de Données (SGBD) comme MySQL ou MariaDB pour le stockage et l'accès aux données 
+* Un gestionnaire de Bases de Données (BDD) comme MySQL ou MariaDB pour le stockage et l'accès aux données 
 
 ---
 
@@ -196,4 +196,64 @@ sudo systemctl restart apache2
 
 ### Installer GLPI via interface web
 
+Les fichiers (/var/www/html) et services (MariaDB, PHP et Apache2) sont prêts pour GLPI.
+L'installation va se poursuivre via un navigateur web.
 
+Accédez à votre service GLPI depuis n'importe quel PC **sur le même réseau** en vous rendant à
+l'URL suivante :
+**http://ip_ou_nom_du_serveur_glpi/glpi**
+
+Vous arrivez sur la page d'installation de GLPI : 
+- Sélectionnez le **Français** dans la liste déroulante et cliquez sur **OK**.
+- **Acceptez les conditions d’utilisation** pour poursuivre.
+- Cliquez sur le bouton **Installer** pour lancer l'installation.
+
+Une série de tests sera lancée pour s’assurer que tous les prérequis nécessaires au bon fonctionnement de GLPI sont remplis.
+
+Si tout est OK, cliquez sur **Continuer**, sinon corrigez les erreurs signalées et relancez une vérification.
+
+Il reste à saisir les informations sur la BDD destinée à GLPI que nous avons précédemment créée.
+- Dans le champ "Serveur SQL", saisissez **localhost** 
+    - si la BDD est sur une autre machine, saisissez son adresse IP ou son nom. 
+- Saisissez ensuite le nom de votre utilisateur SQL ("admin" dans notre cas), ainsi que son mot de passe.
+
+Un test de connexion à la BDD est effectué. Si réussi, vous pourrez sélectionner la BDD et cliquer sur **Continuer**.
+
+Attendez que l'initialisation de la BDD soit terminée et cliquez à nouveau sur **Continuer**.
+La fin de l'installation ne nécessite pas d'instructions particulières.
+
+**ATTENTION**:
+Notez bien les identifiants des 4 comptes par défaut qui vous sont fournis en fin d'installation.
+
+### Première connexion
+
+En fin d'installation, après avoir noté les identifiants fournis, cliquez sur "Utiliser GLPI".
+Connectez-vous avec le compte administrateur.
+
+Une fois connecté, vous arrivez sur le tableau de bord de GLPI.
+Vous pouvez désactiver les données de démonstration en cliquant sur le bouton dédié.
+
+Un **message d’avertissement** vous informe que par sécurité il faudra **changer les mots de passe par défaut des 4 utilisateurs** déjà présents dans GLPI.
+
+Si vous cliquez sur le nom de l’un des utilisateurs, vous arriverez directement sur sa configuration. 
+En bas à droite, cliquez sur **Modifier le mot de passe**.
+
+Saisissez un nouveau mot de passe puis **cliquez en dehors de la nouvelle fenêtre** pour valider le 
+changement en cliquant sur **Sauvegarder**.
+
+**Répétez l’opération sur les 4 comptes utilisateurs** pour faire disparaître l’avertissement.
+
+**Votre GLPI est désormais fonctionnel ! ![bravo](https://neptunet.fr/wp-content/plugins/kama-wp-smile/packs/qip/bravo.gif)**
+
+Les différents **menus latéraux** vous permettront de gérer :
+- votre parc informatique,
+- vos tickets d’incidents,
+- vos contrats,
+- vos fournisseurs,
+- vos commandes,
+- vos utilisateurs
+- les projets du SI
+- etc.
+
+---
+EOF
