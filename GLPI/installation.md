@@ -7,7 +7,7 @@ Documentation officielle : 
 
 ---
 
-#### Architecture 
+## Architecture 
 
 **GLPI nécessite 3 composants pour fonctionner** :  
 * Un serveur web comme NGINX ou Apache2 pour l'interface utilisateur 
@@ -16,7 +16,9 @@ Documentation officielle : 
 
 ---
 
-## Voyons comment installer GLPI 11 sur Debian 13
+## Comment installer GLPI 11 sur Debian 13 ?
+
+### A propos de sudo
 
 * si vous n'avez pas défini de mot de passe **root** lors de l'installation de Debian, vous pourrez utiliser **sudo** 
 
@@ -24,6 +26,8 @@ Documentation officielle : 
   * Log in as root using the root password
   * Install sudo with the command: `apt install sudo` 
   * add your user to the sudo group: `usermod -aG sudo username`
+
+### Pré-requis
 
 * mettez à jour la liste des paquets disponibles dans les dépôts et installer les dernières versions des paquets déjà présents:
 ```bash
@@ -35,13 +39,15 @@ sudo apt update && sudo apt upgrade –y
 sudo apt install apache2 mariadb-server php8.4 –y
 ```
 
+### Installation des extensions PHP
+
 * **Le dépôt Sury** est la solution la plus fiable pour installer des **extensions PHP** récentes sur Debian 13.
   Voici comment l'ajouter : 
   * installer les dépendances nécessaires : `sudo apt install -y apt-transport-https lsb-release ca-certificates`
   * ajouter la clé GPG du dépôt : `sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg`
   * ajouter le dépôt de Ondřej Surý  :  
 ```bash
-echo "deb https://packages.sury.org/php/ $(lsb\_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
 ```
 
 * installez un gestionnaire de processus PHP nommé **FastCGI Process Manager** (FPM) : 
@@ -58,6 +64,8 @@ sudo apt install php8.4-{dom,simplexml,redis,cli,imap,mysql,mbstring,curl,gd,xml
 
 * Pour permettre à GLPI de communiquer avec un annuaire **LDAP**, comme Active Directory, il faut aussi installer `php8.4-ldap` 
 
+### Préparation de la BDD
+
 * **Connectez-vous au SGBD** précédemment installé : 
 ```bash
 sudo mariadb
@@ -67,7 +75,7 @@ sudo mariadb
 
 * **Créez la BDD qui sera utilisée par GLPI** :
 ```bash
-create database glpi\_fondasol;
+create database glpi_fondasol;
 ```
 Pensez à bien noter le nom donné à votre BDD, ici elle se nomme "glpi_fondasol" 
 
@@ -79,10 +87,12 @@ Ici, nous avons nommé l'utilisateur "admin" et il faut remplacer "motdepasse" p
 
 * Quittez le service mariadb avec la commande `exit` 
 
-* **Téléchargez GLPI** : 
-  * Trouvez la dernière versoin stable : <https://github.com/glpi-project/glpi/releases/latest> 
-  * Placez-vous dans le dossier Téléchargement : `cd ~/Téléchargements/` 
-  * Téléchargez la dernière version : `wget https://github.com/glpi-project/glpi/releases/download/11.0.1/glpi-11.0.1.tgz`
+### Téléchargement de GLPI
+
+**Téléchargez GLPI** : 
+* Trouvez la dernière version stable : <https://github.com/glpi-project/glpi/releases/latest> 
+* Placez-vous dans le dossier Téléchargements : `cd ~/Téléchargements/` 
+* Téléchargez la dernière version : `wget https://github.com/glpi-project/glpi/releases/download/11.0.1/glpi-11.0.1.tgz`
 
 * Décompressez l’archive de GLPI directement dans le répertoire par défaut du service web (apache2) : 
 ```bash
@@ -101,21 +111,30 @@ ls -l /var/www/html
 Vous pourrez constater la présence d’un répertoire nommé « glpi » dont le propriétaire est bien l’utilisateur nommé « www-data ». 
 
 **IMPORTANT**:
-Pour des raisons de sécurité, il est recommandé de déplacer certains dossiers sensibles de /var/www/glpi/ car ils sont exposés publiquement sur le web. En particulier le dossier "config" qui peut être déplacé vers /etc/glpi/ ou /var/lib/glpi/.  
+Pour des raisons de sécurité, il est recommandé de déplacer certains dossiers sensibles de /var/www/glpi/ car ils sont exposés publiquement sur le web. En particulier le dossier "config" 
+qui peut être déplacé vers /etc/glpi/ ou /var/lib/glpi/.  
 
-* **Configurez le service web** : 
-  * vérifiez la version de php utilisée actuellement : `php –v` 
-  * créez un **virtualhost** spécialement dédié à GLPI : 
+### Configuration du service web 
+
+Vérifiez la version de php utilisée actuellement : `php –v` 
+
+Créez un **virtualhost** spécialement dédié à GLPI : 
     * Un virtualhost est un fichier configuré sur apache permettant de faire cohabiter plusieurs sites web sur la même machine.  
     * Chaque virtualhost est configuré pour l’un des sites web hébergés sur le serveur. 
     * Créez un fichier **glpi.conf** comme suit : `sudo nano /etc/apache2/sites-available/glpi.conf`
     * Dans ce fichier, insérez le contenu suivant :
 ```bash
-<VirtualHost \*:80> 
-    ServerName glp11-vm 
+<VirtualHost *:80> 
+	# accès serveur GLPI via son nom
+    ServerName glpi11-vm 
+    # Pour accès serveur via adresse IP au lieu du nom si absence de DNS
     ServerAlias 192.168.0.99 
     DocumentRoot /var/www/html 
+
+    # Accès GLPI depuis http://nom-ou-IP/glpi
     Alias /glpi /var/www/html/glpi/public 
+
+    # Définit les accès et règles de réécriture d'URL pour le dossier public de GLPI
     <Directory /var/www/html/glpi/public> 
         Options -Indexes +FollowSymLinks 
         Require all granted 
@@ -123,21 +142,58 @@ Pour des raisons de sécurité, il est recommandé de déplacer certains dossier
         RewriteBase /glpi/ 
         RewriteCond %{REQUEST\_FILENAME} !-f 
         RewriteCond %{REQUEST\_FILENAME} !-d 
-        RewriteRule ^ index.php \[QSA,L] 
+        RewriteRule ^ index.php [QSA,L] 
     </Directory> 
-    <FilesMatch \\.php$> 
+
+    # Délègue l'exécution des fichiers .php à PHP-FPM 
+    <FilesMatch \.php$> 
     	SetHandler "proxy:unix:/run/php/php8.4-fpm.sock|fcgi://localhost" 
     </FilesMatch> 
-    ErrorLog ${APACHE\_LOG\_DIR}/glpi\_error.log 
-    CustomLog ${APACHE\_LOG\_DIR}/glpi\_access.log combined 
+
+    # isole les logs spécifiques à GLPI dans /var/log/apache2
+    ErrorLog ${APACHE_LOG_DIR}/glpi_error.log 
+    CustomLog ${APACHE_LOG_DIR}/glpi_access.log combined 
 </VirtualHost>
 ```
-Remplacez "ServerName" par le nom de votre serveur (ou l’IP si vous n'avez pas configuré de DNS)  
-Dans la section "FilesMatch", indiquez la version de PHP installée sur votre système (ici 8.4) 
+Remplacez "glpi11-vm" par le nom de votre serveur (ou l’IP si vous n'avez pas configuré de DNS).  
+Dans la section "FilesMatch", modifiez la version de PHP s'il ne s'agit pas de la 8.4. 
 
-Activez les modules nécessaires pour que PHP-FPM fonctionne correctement avec apache : 
+**La config ci-dessus permet de** :
+- orienter les requêtes non-relatives à un fichier/dossier existant vers le routeur PHP principal (`index.php`)
+- désactiver l’accès direct à la liste des fichiers pour renforcer la sécurité.
+- donner accès à tous les utilisateurs web
+- supporter la gestion correcte des URLs dynamiques via le moteur de réécriture
+
+Activez les **modules** nécessaires pour que **PHP-FPM** fonctionne correctement avec apache : 
 ```bash
-sudo a2enmod proxy\_fcgi setenvif
+sudo a2enmod proxy_fcgi setenvif
 ```
 
-Activez un module apache qui permet de gérer les URL dynamiques et les redirections comme celles utilisées par GLPI : 
+Activez un module apache qui permet de gérer les **URL dynamiques** et les **redirections** comme celles utilisées par GLPI : 
+```bash
+sudo a2enmod rewrite
+```
+
+**Activez la config de PHP-FPM** pour s'assurer qu'apache va bien déléguer l’exécution des fichiers PHP :
+```bash
+sudo a2enconf php*-fpm
+```
+
+**Désactivez** le fichier de **configuration par défaut** pour éviter les interférences :
+```bash
+sudo a2dissite 000-default.conf
+```
+
+**Activez le virtualhost** spécialement créé pour glpi :
+```bash
+sudo a2ensite glpi.conf
+```
+
+La config du service web est terminée, il ne reste plus qu’à **redémarrer le service apache2** pour appliquer toutes les modifications apportées :
+```bash
+sudo systemctl restart apache2
+```
+
+### Installer GLPI via interface web
+
+
