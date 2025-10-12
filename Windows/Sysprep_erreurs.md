@@ -23,4 +23,16 @@ Prêtez attention aux **codes erreur Microsoft** qui commencent par **0x** et ut
 
 ## Erreurs fréquentes et solutions
 
+### Redémarrage en attente suite mise à jour système
 
+**Erreur indiquée dans le fichier setuperr**:
+*"There are one or more Windows updates that require a reboot. To run Sysprep, reboot the computer
+and restart the application."*
+
+**Solution :**
+Vérifiez dans **Windows Update** si un redémarrage est nécessaire, redémarrez la machine et relancez Sysprep.
+![sysprep_error1.png](./images/sysprep_error1.png)
+
+### Stockage en cours d'utilisation
+
+**Erreur indiquée dans le fichier setuperr**:
