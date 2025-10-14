@@ -94,7 +94,7 @@ La commande risque de retourner beaucoup d'erreurs (en rouge) mais ce n'est pas 
 L'exécution sera terminée lorsque vous verrez de nouveau le prompt indiquer le chemin 
 « C:\Windows\system32 ». Vous pourrez alors relancer Sysprep.
 
-### Dépassement du nombre de réinitialisations système autorisé
+### Dépassement du nombre de réinitialisations autorisé
 
 **Erreur indiquée dans le fichier setuperr**:
 *«  Failure occurred while executing ‘SLReArmWindows’ from C:\Windows\System32\slc.dll »*
@@ -110,9 +110,24 @@ Dans l’arborescence de l’éditeur de base de registre, allez dans
 **HKEY_LOCAL_MACHINE > SOFTWARE > Microsoft > Windows NT > CurrentVersion > SoftwareProtectionPlatform**
 
 Dans la partie de droite, double-cliquez sur la valeur nommée «**SkipRearm**».
+Dans le champ **"Données de la valeur"**, mettez un **1 à la place du 0** et cliquez sur OK.
 
+Toujours dans l’arborescence de l’éditeur de base de registre, allez dans 
+**HKEY_LOCAL_MACHINE > SYSTEM > Setup > Status > SysprepStatus**
 
+Dans la partie de droite, mettez la valeur **"CleanupState" sur 2** et la valeur **"GeneralizationState" sur 7**.
 
+Fermez l’éditeur de la base de registre.
 
+Ouvrez l'invite de commandes en tant qu'admin et saisissez les 2 commandes suivantes l’une après l’autre:
+```
+msdtc -uninstall
+msdtc -install
+```
+il n’y aura aucun retour, c’est normal
+MSDTC = Microsoft Distributed Transaction Coordinator
 
+Vous pouvez relancer Sysprep.
 
+---
+EOF
