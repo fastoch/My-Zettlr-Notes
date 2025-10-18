@@ -124,7 +124,7 @@ Ouvrez l'invite de commandes en tant qu'admin et saisissez les 2 commandes suiva
 msdtc -uninstall
 msdtc -install
 ```
-il n’y aura aucun retour, c’est normal
+il n’y aura aucun retour, c’est normal  
 MSDTC = Microsoft Distributed Transaction Coordinator
 
 Vous pouvez relancer Sysprep.
