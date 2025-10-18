@@ -1,5 +1,7 @@
 # Sysprep - Erreurs courantes 
 
+src = https://neptunet.fr/error-sysprep/
+
 ## Qu'est-ce que Sysprep ?
 
 Sysprep permet de préparer des "masters" de Windows, des images standard facilement réutilisables.
@@ -69,5 +71,63 @@ Si vous préférez, vous pouvez faire les **mêmes manipulations** avec des comm
 
 ### Package Microsoft non-provisionné
 
+**Erreur indiquée dans le fichier setuperr**:
+*"Package Microsoft.BingSearch_1.0.79.0_x64_8wekyb3d8bbwe was installed for a user, but not provisioned for all users. This package will not function properly in the sysprep image."*
 
+Cette erreur est très courante. Elle indique qu’un package est installé sur la machine mais 
+non-provisionné pour tous les utilisateurs. Il s’agit en fait d’un "**bloatware**", une application pré-installée qui émane du Microsoft Store.
 
+***Solution:***
+Dans le message d’erreur du fichier setuperr, il y a le **nom du package incriminé**.
+Ce qui va nous intéresser dans le nom exact du package, c’est la **suite de 13 caractères** composées de à la fin, dans notre exemple: **8wekyb3d8bbwe**.
+
+Cette suite de caractère correspond au « **PublisherId** », c’est-à-dire à l’identifiant de l’éditeur du package, qui est propre à Microsoft.
+
+Afin d’éviter de corriger les erreurs de package une par une (car en corriger une en fait apparaître une autre, et ainsi de suite...), on va se servir de « 8wekyb3d8bbwe » pour supprimer d’un seul coup tous 
+les packages possiblement pré-installées par Microsoft ("**bloatware**").
+
+Ouvrez Powershell en tant qu'admin est exécuter la commande suivante:
+```powershell
+`Get-AppxPackage -AllUsers | Where {$_.PackageFullName -like "*8wekyb3d8bbwe*"} | Remove-AppxPackage`
+```
+La commande risque de retourner beaucoup d'erreurs (en rouge) mais ce n'est pas important.
+L'exécution sera terminée lorsque vous verrez de nouveau le prompt indiquer le chemin 
+« C:\Windows\system32 ». Vous pourrez alors relancer Sysprep.
+
+### Dépassement du nombre de réinitialisations autorisé
+
+**Erreur indiquée dans le fichier setuperr**:
+*«  Failure occurred while executing ‘SLReArmWindows’ from C:\Windows\System32\slc.dll »*
+
+Cette erreur est plus rare et plus complexe. Elle signifie que la machine a été réinitialisée de trop nombreuses fois et qu'il  n’est plus possible de la généraliser avec Sysprep.
+
+L’action "généraliser" de Sysprep agit comme la commande `slmgr /rearm` qui vise à réarmer la licence de Windows, et cette opération peut être effectuée un nombre de fois limité selon l’édition du produit.
+
+***Solution:***
+Allez dans l’**éditeur de la base de registre** *(appuyez simultanément sur les touches Windows et R du clavier et saisissez « regedit »)*.
+
+Dans l’arborescence de l’éditeur de base de registre, allez dans 
+**HKEY_LOCAL_MACHINE > SOFTWARE > Microsoft > Windows NT > CurrentVersion > SoftwareProtectionPlatform**
+
+Dans la partie de droite, double-cliquez sur la valeur nommée «**SkipRearm**».
+Dans le champ **"Données de la valeur"**, mettez un **1 à la place du 0** et cliquez sur OK.
+
+Toujours dans l’arborescence de l’éditeur de base de registre, allez dans 
+**HKEY_LOCAL_MACHINE > SYSTEM > Setup > Status > SysprepStatus**
+
+Dans la partie de droite, mettez la valeur **"CleanupState" sur 2** et la valeur **"GeneralizationState" sur 7**.
+
+Fermez l’éditeur de la base de registre.
+
+Ouvrez l'invite de commandes en tant qu'admin et saisissez les 2 commandes suivantes l’une après l’autre:
+```
+msdtc -uninstall
+msdtc -install
+```
+il n’y aura aucun retour, c’est normal
+MSDTC = Microsoft Distributed Transaction Coordinator
+
+Vous pouvez relancer Sysprep.
+
+---
+EOF
