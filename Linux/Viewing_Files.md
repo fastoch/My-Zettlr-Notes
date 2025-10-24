@@ -40,6 +40,7 @@ Of course, `head` does the same but shows the first lines of a file.
 You can specify the desired number of lines: `tail -n 16 filename` or `tail -16 filename` 
 
 To track modifications in a file: `tail -f /var/log/auth.log`  
+To track modifications in the last 15 lines: `tail -n 15 -f filename`
 When done tracking changes to the file, press Ctrl + C.  
 
 ### watch
