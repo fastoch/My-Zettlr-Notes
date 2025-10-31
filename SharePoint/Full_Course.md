@@ -50,6 +50,11 @@ If your intention is to simply broadcast information to a large audience, a comm
 It can be seen as an intranet for your company.  
 It's usually used to share news, reports, status, and other info in a visually compelling format. 
 
+### Deleting a site
+
+You must be one of the site owners to do that. Regular members can't delete a site.  
+Click the gear icon at the top right and select "site information", then click on "delete site".
+
 ## Using Quick Launch
 
 ## Accessing Site Contents
@@ -63,4 +68,4 @@ It's usually used to share news, reports, status, and other info in a visually c
 ## Content Approval
 
 ---
-EOF @17/47min
+EOF @25/47min
