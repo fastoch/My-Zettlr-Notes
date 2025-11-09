@@ -55,9 +55,20 @@ It's usually used to share news, reports, status, and other info in a visually c
 You must be one of the site owners to do that. Regular members can't delete a site.  
 Click the gear icon at the top right and select "site information", then click on "delete site".
 
-## Using Quick Launch
-
 ## Accessing Site Contents
+
+The gear icon at the top right allows us to access the current site contents. 
+
+### Label + sub links
+
+If our navigation menu gets cluttered, we can create a label and move some links under this label:
+- enter edit mode in the navigation menu
+- hover between 2 links from the navigation menu
+- click the + sign and select "label"
+- name your label
+- move the label to the top of your navigation menu (or wherever you want it)
+- click the 3 dots next to the links you want to put under the new label
+- 
 
 ## Working with a document library
 
@@ -68,4 +79,4 @@ Click the gear icon at the top right and select "site information", then click o
 ## Content Approval
 
 ---
-EOF @25/47min
+EOF @30/47min
