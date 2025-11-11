@@ -1,3 +1,5 @@
+src = https://youtu.be/hc1a1t4YBWM?si=lZlW1lfSIa5CAKjt  
+
 # Tableaux Croisés Dynamiques
 
 ## Pré-requis
@@ -28,7 +30,7 @@ Exemple avec des données source contenant les bénéfices d'une boutique en lig
 - ensuite, on peut ajouter les types de produit dans la zone "colonnes"
 ce qui va nous afficher le détail des bénéfices pour chaque type de produit
 
-### Règles importantes
+## Règles importantes
 
 - L'ordre dans lequel on dispose les champs dans chaque zone est important
 - La zone des valeurs est destinée à accueillir des données chiffrées
@@ -43,6 +45,29 @@ Quand on est sur une cellule de notre TCD, apparaissent 2 menus en haut du fichi
 
 Si jamais le panneau latéral "champs de TCD" n'est pas visible, aller sur l'onglet "analyse du TCD" et cliquer sur "liste des champs".  
 
+## Zone "Valeurs"
 
-___
-@11/26
+Par défaut, Excel somme les valeurs ajoutées à cette zone. Mais ce comportement peut être modifié.  
+- Pour cela, cliquer sur la liste déroulante à côté de l'élément à modifier (dans la zone des valeurs).
+- Sélectionner "paramètres des champs de valeurs"
+    - On peut alors modifier le type de calcul utilisé pour synthétiser les valeurs
+    - ou bien transformer les valeurs brutes pour afficher par exemple des pourcentages
+        - % du total de la ligne
+        - % du total de la colonne
+        - etc.
+
+## Modification de la source de données
+
+Si on modifie la source de données après la création du TCD, le TCD ne va pas s'actualiser tout seul.  
+Il faut aller dans l'onglet "analyse dy TCD" et cliquer sur "changer la source des données".  
+Il suffit de modifier la plage sélectionnée pour que le TCD prenne en compte les nouvelles données.  
+
+## Mise en forme d'un TCD
+
+Cela se fait via l'onglet "Création". On peut y modifier:
+- l'affichage des totaux généraux
+- l'affichage des sous-totaux
+- la disposition du rapport
+
+## Ne pas partager des données confidentielles
+
