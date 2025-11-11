@@ -62,6 +62,23 @@ Si on modifie la source de données après la création du TCD, le TCD ne va pas
 Il faut aller dans l'onglet "analyse dy TCD" et cliquer sur "changer la source des données".  
 Il suffit de modifier la plage sélectionnée pour que le TCD prenne en compte les nouvelles données.  
 
+### Astuce pour améliorer la sélection des données
+
+Idéalement, ceci est à faire avant la création du TCD:
+- Ctrl + A pour sélectionner l'ensemble de vos données source
+- Onglet Insertion > clic sur Tableau
+
+Cela va créer un tableau: 
+- assurez-vous que la zone sélectionnée est la bonne
+- et que la case "mon tableau comporte des en-têtes" est cochée
+
+Une fois le tableau créé, un onglet "création de tableau" apparaît:
+- nommez votre tableau comme vous le souhaitez, ce sera votre source de données
+- vous pourrez ensuite utiliser ce nom comme référence lors de la création du TCD
+
+La création d'un tableau vous évitera d'avoir à changer la source de données de votre TCD lorsque vous ajouterez des données dans votre tableau,
+l'actualisation du TCD via un clic-droit suffira.
+
 ## Mise en forme d'un TCD
 
 Cela se fait via l'onglet "Création". On peut y modifier:
@@ -71,3 +88,6 @@ Cela se fait via l'onglet "Création". On peut y modifier:
 
 ## Ne pas partager des données confidentielles
 
+- bien actualiser le TCD avant de procéder
+- clic-droit sur le TCD > Options du TCD
+- onglet Données > décocher les cases "enregistrer données source avec le fichier" et "activer affichage des détails"
