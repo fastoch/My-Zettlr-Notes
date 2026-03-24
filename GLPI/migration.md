@@ -1,6 +1,6 @@
-Dernière version de GLPI : <https://github.com/glpi-project/glpi/releases/>  
-Documentation officielle : <https://help.glpi-project.org/faq/fr/glpi/installation_update>  
-Tuto : <https://www.it-connect.fr/tuto-mettre-a-jour-glpi/>  
+- Dernière version de GLPI : <https://github.com/glpi-project/glpi/releases/>  
+- Documentation officielle : <https://help.glpi-project.org/faq/fr/glpi/installation_update>  
+- Tuto : <https://www.it-connect.fr/tuto-mettre-a-jour-glpi/>  
 
 ---
 
