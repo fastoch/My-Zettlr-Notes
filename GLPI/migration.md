@@ -7,8 +7,8 @@
 ## 1. Vérification préalable 
 
 Si vous envisagez d'effectuer une mise à jour majeure sur votre serveur GLPI, par exemple, vérifiez au préalable que les extensions 
-que vous utilisez soient bien prises en charge par la nouvelle version.  
- 
+que vous utilisez soient bien prises en charge par la nouvelle version.  
+
 Notez que le plugin **FusionInventory** est pris en charge uniquement jusqu'à la version **10.0.3** de GLPI.  
 Pour les versions supérieures, GLPI a développé un **agent natif** ainsi qu'un **plugin** "GLPI Inventory" qui remplacent FusionInventory. 
 
